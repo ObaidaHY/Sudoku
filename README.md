@@ -1,4 +1,4 @@
-# Sudoku
+# Sudoku Game
 
 ## about:
 Sudoku generator and solver with simple GUI created in Python using PyGame.<br />
