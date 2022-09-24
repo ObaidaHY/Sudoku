@@ -1,28 +1,19 @@
 
 import pygame
+from chooseLevel import *
+from sudokuGenerator import *
 from solver import *
 import time
+import os
 pygame.font.init()
 
-
-
-
-
-
+WIDTH, HEIGHT = (540,600)
 
 class Grid:
-    board = [   
-        [5,3,0,0,7,0,0,0,0],
-        [6,0,0,1,9,5,0,0,0],
-        [0,9,8,0,0,0,0,6,0],
-        [8,0,0,0,6,0,0,0,3],
-        [4,0,0,8,0,3,0,0,1],
-        [7,0,0,0,2,0,0,0,6],
-        [0,6,0,0,0,0,2,8,0],
-        [0,0,0,4,1,9,0,0,5],
-        [0,0,0,0,8,0,0,7,9]
-    ]
-    def __init__(self, rows, cols, width, height, win, level = 2): 
+    
+    def __init__(self, rows, cols, width, height, win, level = 2):
+        generateRandomBoard()
+        self.board = sudokuGenerate(level)
         self.rows = rows
         self.cols = cols
         self.cubes = [[Cube(self.board[i][j], i, j, width, height) for j in range(cols)] for i in range(rows)]
@@ -235,11 +226,12 @@ def format_time(secs):
 
 
 
-def main():
+def game(level):
     
-    win = pygame.display.set_mode((540,600))
+    win = pygame.display.set_mode((WIDTH, HEIGHT))
     pygame.display.set_caption("Sudoku")
-    board = Grid(9, 9, 540, 540, win)
+    level = level if level else 2
+    board = Grid(9, 9, 540, 540, win, level)
     key = None
     run = True
     start = time.time()
@@ -321,6 +313,17 @@ def main():
         redraw_window(win, board, play_time, strikes)
         pygame.display.update()
 
+
+def main():
+    loop = True
+    level = None
+    while loop :
+        level = chooseLevel()
+        if level == 1 or level == 2 or level == 3:
+            loop = False
+    
+    pygame.init()
+    game(level)
 
 main()
 pygame.quit()
